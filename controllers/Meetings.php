@@ -133,7 +133,9 @@ class Meetings extends AdminController
 		$this->load->view('index', $data1);
 	}
 
-		/**
+
+
+	/**
 	 * Create meeting view
 	 *
 	 * @return view
@@ -181,6 +183,28 @@ class Meetings extends AdminController
 		if ($data) {
 			var_dump($data);
 		}
+	}
+
+	/**
+	 * View meeting
+	 *
+	 * @return void
+	 */
+	public function view()
+	{
+		if (!staff_can('view', 'teams_meeting_manager')) {
+			show_404();
+		}
+
+		$id = $this->input->get('mid');
+
+		if ($id) {
+			$data['id'] = $id;
+		} else {
+			show_404();
+		}
+
+		$this->load->view('view', $data);
 	}
 
 	public function delete()

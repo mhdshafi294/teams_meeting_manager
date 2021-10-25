@@ -15,12 +15,16 @@
             <span
                 data-topic="<?= $meeting["id"]  ?>"><?= isset($meeting["subject"]) ? $meeting["subject"] : 'No Subject'; ?></span>
             <div class="row-options">
-                <a href="">view</a> |
+
+                <a href="<?= admin_url('teams_meeting_manager/meetings/view/?mid=' . $meeting["id"] . ''); ?>">view</a>
+
+                | <a data-toggle="tooltip" title="Notes" data-id="<?= $meeting["id"];  ?>"
+                    onclick="editMeetingNotes(this)" style="cursor:pointer;">Notes</a>
 
                 <?php
                          if (staff_can('delete', 'teams_meeting_manager')) : ?>
 
-                <a href="<?= admin_url('teams_meeting_manager/meetings/delete/?mid=' . $meeting["id"]) . ''; ?>"
+                | <a href="<?= admin_url('teams_meeting_manager/meetings/delete/?mid=' . $meeting["id"]) . ''; ?>"
                     class="text-danger _delete">delete</a>
                 <?php endif; ?>
 

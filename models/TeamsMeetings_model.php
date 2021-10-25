@@ -4,6 +4,19 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class TeamsMeetings_model extends App_Model
 {
+
+    /**
+     * Get a meeting 
+     *
+     * @param string $id
+     * @return araay
+     */
+    public function get_teams_meeting($id)
+    {
+        $query = $this->db->get_where('tbltmm', array('id' => $id));
+        return $query->row_array();
+    }
+
     /**
      * Create meeting user
      *
