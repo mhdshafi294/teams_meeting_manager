@@ -23,15 +23,18 @@ init_head();
                                 <hr>
                             </div>
                             <div class="form-group">
-                                <h4><strong>Description:</strong> <?= $meeting["description"] ?></h4>
+                                <h4><strong>Description:</strong> <?= $meeting["bodyPreview"] ?></h4>
                                 <hr>
                             </div>
                             <div class="form-group">
-                                <h4 class="<?= (ucfirst($meeting->status) === 'Started') ? 'text-success' : 'text-info' ?>" data-toggle="tooltip" title="After clicking on the Start URL your browser will open new tab, after the tab is fully loaded you can close the tab. Then you can join the meeting by click in Join URL(Web)">
+                                <h4 class="<?= (ucfirst($meeting->status) === 'Started') ? 'text-success' : 'text-info' ?>"
+                                    data-toggle="tooltip"
+                                    title="After clicking on the Start URL your browser will open new tab, after the tab is fully loaded you can close the tab. Then you can join the meeting by click in Join URL(Web)">
                                     <strong>Status:</strong>
                                     <?= ucfirst($meeting->status) ?>
                                     <?php if ($meeting->status === 'waiting') : ?>
-                                        <a class="pull-right" href="<?= $meeting->start_url; ?>" target="_blank"><strong>Start URL</strong></a>
+                                    <a class="pull-right" href="<?= $meeting->start_url; ?>"
+                                        target="_blank"><strong>Start URL</strong></a>
                                     <?php endif; ?>
                                 </h4>
                                 <hr>
@@ -63,13 +66,15 @@ init_head();
                                 <hr>
                             </div>
                             <div class="form-group">
-                                <h4><strong>Allow participants to join the meeting before the host starts the meeting.:</strong>
-                                    <?= ($settings->join_before_host) ? _l('yes') : _l('no'); ?></h4>
+                                <h4><strong>Allow participants to join the meeting before the host starts the
+                                        meeting.:</strong>
+                                    Yes</h4>
                                 <hr>
                             </div>
                             <div class="form-group">
                                 <h4>
-                                    <a href="<?= str_replace('j/', 'wc/join/', $meeting["onlineMeeting"]["joinUrl"]); ?>" target="_blank">
+                                    <a href="<?= str_replace('j/', 'wc/join/', $meeting["onlineMeeting"]["joinUrl"]); ?>"
+                                        target="_blank">
                                         <strong>Join URL</strong>
                                     </a>
                                 </h4>
@@ -77,7 +82,8 @@ init_head();
                             </div>
                         </div>
                         <div class="clearfix"></div>
-                        <a href="<?= admin_url('teams_meeting_manager/meetings/index'); ?>" class="btn btn-default btn-xs">Back To Meetings</a>
+                        <a href="<?= admin_url('teams_meeting_manager/meetings/index'); ?>"
+                            class="btn btn-default btn-xs">Back To Meetings</a>
                     </div>
                 </div>
             </div>
@@ -87,10 +93,10 @@ init_head();
 </div>
 <?php init_tail(); ?>
 <script>
-    /**
-     * Just toggles the menu to be active
-     */
-    $('.menu-item-zoom_meeting_manager').addClass('active');
+/**
+ * Just toggles the menu to be active
+ */
+$('.menu-item-zoom_meeting_manager').addClass('active');
 </script>
 </body>
 
