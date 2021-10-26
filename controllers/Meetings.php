@@ -133,7 +133,51 @@ class Meetings extends AdminController
 		$this->load->view('index', $data1);
 	}
 
+	/**
+	 * View meeting
+	 *
+	 * @return void
+	 */
+	public function view()
+	{
+		if (!staff_can('view', 'teams_meeting_manager')) {
+			show_404();
+		}
 
+		$user_data = $this->TeamsMeetings_model->get_teams_user();
+		$accessToken = $user_data[0]['access_token'];
+
+		$id = $this->input->get('mid');
+
+		if ($id) {
+			$curl = curl_init();
+
+			curl_setopt_array($curl, array(
+				CURLOPT_URL => 'https://graph.microsoft.com/v1.0/me/events/' . $id,
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_ENCODING => '',
+				CURLOPT_MAXREDIRS => 10,
+				CURLOPT_TIMEOUT => 0,
+				CURLOPT_FOLLOWLOCATION => true,
+				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				CURLOPT_CUSTOMREQUEST => 'GET',
+				CURLOPT_HTTPHEADER => array(
+					'Authorization: Bearer ' . $accessToken
+				),
+			));
+
+			$response = curl_exec($curl);
+
+			curl_close($curl);
+			$meeting = json_decode($response, true);
+
+			$data['meeting'] = $meeting;
+		} else {
+			show_404();
+		}
+
+		$this->load->view('view', $data);
+	}
 
 	/**
 	 * Create lunch meeting view
@@ -185,27 +229,6 @@ class Meetings extends AdminController
 		}
 	}
 
-	/**
-	 * View meeting
-	 *
-	 * @return void
-	 */
-	public function view()
-	{
-		if (!staff_can('view', 'teams_meeting_manager')) {
-			show_404();
-		}
-
-		$id = $this->input->get('mid');
-
-		if ($id) {
-			$data['id'] = $id;
-		} else {
-			show_404();
-		}
-
-		$this->load->view('view', $data);
-	}
 
 	public function delete()
 	{

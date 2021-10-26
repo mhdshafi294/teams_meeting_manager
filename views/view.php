@@ -3,7 +3,6 @@
 /**
  * Current meeting
  */
-$meeting = $this->TeamsMeetings_model->get_teams_meeting($id);
 init_head();
 ?>
 <div id="wrapper">
