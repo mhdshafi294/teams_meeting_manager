@@ -117,7 +117,7 @@ class Meetings extends AdminController
 		$meetings_array = [];
 
 		foreach ($arr["value"] as $meeting) {
-			if ($meeting["isOnlineMeeting"]) {
+			if ($meeting["isOnlineMeeting"] && $meeting["onlineMeetingProvider"] == "teamsForBusiness") {
 				$meetings_array[] = $meeting;
 			}
 		}
@@ -136,7 +136,7 @@ class Meetings extends AdminController
 
 
 	/**
-	 * Create meeting view
+	 * Create lunch meeting view
 	 *
 	 * @return view
 	 */
