@@ -113,4 +113,29 @@ class TeamsMeetings_model extends App_Model
             return false;
         }
     }
+
+    /**
+     * Get a meeting note
+     *
+     * @param string $meeting_id
+     * @return araay
+     */
+    public function get_meeting_notes($meeting_id)
+    {
+        $query = $this->db->get_where('tbltmm_notes', array('meeting_id' => $meeting_id));
+        return $query->row_array();
+    }
+
+    /**
+     * Check user exists
+     *
+     * @return boolean
+     */
+    public function update_meeting_notes($data)
+    {
+        $this->db->where('meeting_id', $data['meeting_id']);
+        $this->db->update('tbltmm_notes', $data);
+        $query = $this->db->get_where('tbltmm_notes', array('meeting_id' => $data['meeting_id']));
+        return $query->row_array();
+    }
 }

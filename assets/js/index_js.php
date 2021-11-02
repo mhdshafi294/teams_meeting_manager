@@ -19,9 +19,9 @@ $(function() {
 
 });
 
-var zmm_app_edit_id = '';
+var tmm_app_edit_id = '';
 var lang_save = "<?= _l('save'); ?>";;
-var lang_view_notes = "<?= _l('zmm_viewing_notes'); ?>";
+var lang_view_notes = 'Viewing notes for meeting with topic: ';
 
 
 function editMeetingNotes(el) {
@@ -58,10 +58,10 @@ function editMeetingNotes(el) {
     }
 
     var meeting_notes = $.ajax({
-            url: "/zoom_meeting_manager/index/get_notes/" + appointment_id,
+            url: "/teams_meeting_manager/meetings/get_notes/" + appointment_id,
             beforeSend: function(xhr) {
                 $('.edit_meeting_notes .panel-body').html(skeleton_loader);
-                zmm_app_edit_id = appointment_id;
+                tmm_app_edit_id = appointment_id;
             }
         })
         .done(function(data) {
@@ -92,7 +92,7 @@ function editMeetingNotes(el) {
                     init_editor('textarea[name="notes"]');
                 }, 1000);
             } else {
-                alert('Zoom session expired, re-authenticating...');
+                alert('Teams session expired, re-authenticating...');
                 location.reload();
             }
         });
@@ -103,7 +103,7 @@ function updateMeetingFormData() {
     var notes = tinyMCE.activeEditor.getContent();
     var $button = $('.edit_meeting_notes .from-group button');
 
-    $.post('/zoom_meeting_manager/index/update_notes', {
+    $.post('/teams_meeting_manager/meetings/update_notes', {
         meeting_id: zmm_app_edit_id,
         notes: notes,
         beforeUpdate() {
@@ -112,7 +112,7 @@ function updateMeetingFormData() {
     }).done(function(response) {
         response = JSON.parse(response);
         if (response) {
-            alert_float('success', '<?= _l('zmm_meeting_notes_updated'); ?>');
+            alert_float('success', 'Meeting notes was updated successfully');
         }
         $button.html(lang_save);
     });

@@ -310,4 +310,43 @@ class Meetings extends AdminController
 			return false;
 		}
 	}
+	/**
+	 * Get meeting notes
+	 *
+	 * @param string $meeting_id
+	 * @return json
+	 */
+	public function get_notes($meeting_id)
+	{
+		if (!staff_can('view', 'teams_meeting_manager')) {
+			show_404();
+		}
+
+		echo json_encode($this->TeamsMeetings_model->get_meeting_notes($meeting_id));
+	}
+
+
+	/**
+	 * Update meeting notes
+	 *
+	 * @param string $meeting_id
+	 * @return json
+	 */
+	public function update_notes()
+	{
+		if (!staff_can('view', 'teams_meeting_manager')) {
+			show_404();
+		}
+
+		$request = $this->input->post();
+
+		if ($request) {
+			$data = [
+				'meeting_id' => $request['meeting_id'],
+				'note' => $request['notes']
+			];
+		}
+
+		echo json_encode($this->TeamsMeetings_model->update_meeting_notes($data));
+	}
 }
