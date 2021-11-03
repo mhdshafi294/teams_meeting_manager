@@ -314,7 +314,7 @@ class Meetings extends AdminController
 	 * Get meeting notes
 	 *
 	 * @param string $meeting_id
-	 * @return json
+	 * @return 
 	 */
 	public function get_notes($meeting_id)
 	{
@@ -322,7 +322,7 @@ class Meetings extends AdminController
 			show_404();
 		}
 
-		echo json_encode($this->TeamsMeetings_model->get_meeting_notes($meeting_id));
+		return $this->TeamsMeetings_model->get_meeting_notes($meeting_id);
 	}
 
 
@@ -330,7 +330,7 @@ class Meetings extends AdminController
 	 * Update meeting notes
 	 *
 	 * @param string $meeting_id
-	 * @return json
+	 * @return 
 	 */
 	public function update_notes()
 	{
@@ -347,6 +347,6 @@ class Meetings extends AdminController
 			];
 		}
 
-		echo json_encode($this->TeamsMeetings_model->update_meeting_notes($data));
+		return $this->TeamsMeetings_model->update_meeting_notes($data);
 	}
 }
