@@ -71,28 +71,3 @@
 
 <h4 class="text-center"><a href="<?= admin_url('teams_meeting_manager/meetings/createMeeting') ?>"> Schedule a New
         Meeting</a></h4>
-
-
-<!-- <div class="col">
-    <div class="collapse multi-collapse" id="<?= $meeting['id'] . 'multiCollapseExample1'  ?>">
-        <div class="card card-body">
-            <div class="edit_meeting_notes">
-                <div class="panel_s">
-                    <div class="panel-body">
-                        <div class="panel-heading">
-                            <span class="font-medium">Topic: <strong><?= $meeting["subject"]; ?></strong></span>
-                        </div>
-                        <textarea name="notes" class="ays-ignore" style="width:100%;">${data.note ? data.note : ''}</textarea>
-                        <div class="from-group">
-                            <button class="btn btn-primary mtop10 pull-right" onclick="updateMeetingFormData()">${lang_save}</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
-
-<script>
-
-</script>
