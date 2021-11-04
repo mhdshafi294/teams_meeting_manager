@@ -122,8 +122,16 @@ class Meetings extends AdminController
 			}
 		}
 
+		$notes_array = [];
+		foreach ($meetings_array as $meeting) {
+			$notes_array[$meeting["id"]] = $this->TeamsMeetings_model->get_meeting_notes($meeting['id']);
+		}
+
+
+
 		$data2 = [
-			'meetings_array' => $meetings_array
+			'meetings_array' => $meetings_array,
+			'notes_array' => $notes_array
 		];
 
 		$data1 = [
