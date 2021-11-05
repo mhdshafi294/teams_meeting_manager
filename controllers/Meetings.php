@@ -124,8 +124,13 @@ class Meetings extends AdminController
 
 		$notes_array = [];
 		foreach ($meetings_array as $meeting) {
+			if ($this->TeamsMeetings_model->check_meeting_exists($meeting['id'])) {
+				$this->TeamsMeetings_model->create_meeting_notes($meeting['id']);
+			}
 			$notes_array[$meeting["id"]] = $this->TeamsMeetings_model->get_meeting_notes($meeting['id']);
 		}
+
+		
 
 
 
@@ -347,6 +352,8 @@ class Meetings extends AdminController
 		}
 
 		$request = $this->input->post();
+		echo $request['meeting_id'] . "<br>";
+		echo $request['notes'];
 
 		if ($request) {
 			$data = [

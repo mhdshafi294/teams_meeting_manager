@@ -115,6 +115,22 @@ class TeamsMeetings_model extends App_Model
     }
 
     /**
+     * Create meeting user
+     *
+     * @param araay $user
+     * @return boolean
+     */
+    public function create_meeting_notes($data)
+    {
+        $data = array(
+            'meeting_id' =>  $data,
+            'note' =>  'no note'
+        );
+        return $this->db->insert('tbltmm_notes', $data);
+    }
+
+
+    /**
      * Get a meeting note
      *
      * @param string $meeting_id
@@ -137,5 +153,20 @@ class TeamsMeetings_model extends App_Model
         $this->db->update('tbltmm_notes', $data);
         $query = $this->db->get_where('tbltmm_notes', array('meeting_id' => $data['meeting_id']));
         return $query->row_array();
+    }
+
+    /**
+     * Check user exists
+     *
+     * @return boolean
+     */
+    public function check_meeting_exists($meeting_id)
+    {
+        $query = $this->db->get_where('tbltmm_notes', array('meeting_id' => $meeting_id));
+        if (empty($query->row_array())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
