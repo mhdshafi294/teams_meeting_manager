@@ -73,8 +73,11 @@
 
 </tbody>
 
-<h4 class="text-center"><a href="<?= admin_url('teams_meeting_manager/meetings/createMeeting') ?>"> Schedule a New
+<h4 class="text-center"><a href="https://teams.live.com/_#/calendarv2"> Schedule a New
         Meeting</a></h4>
+
+<!-- <h4 class="text-center"><a href="<?= admin_url('teams_meeting_manager/meetings/createMeeting') ?>"> Schedule a New
+        Meeting</a></h4> -->
 
 
 <script>
