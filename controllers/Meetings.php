@@ -43,6 +43,7 @@ class Meetings extends AdminController
 
 		if (($client_id == '') || ($client_secret == '')) {
 			$this->load->view('missingCon');
+			return;
 		}
 
 		if ($this->TeamsMeetings_model->check_user_exists()) {

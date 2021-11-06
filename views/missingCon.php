@@ -10,11 +10,9 @@
                             <h4>Teams Meeting Manager</h4>
                             <hr class="hr-panel-heading">
                             <h1 style="text-align:center;margin-top:50px;">Configuration data is missing.<br><br>
-                                Navigate in <a
-                                    href=<?=admin_url("/settings?group=teams-meeting-manager-settings")?>>Settings-&gt;Zoom
+                                Navigate in <a href=<?= admin_url("/settings?group=teams-meeting-manager-settings") ?>>Settings-&gt;Teams
                                     Meeting Manager</a> to add your Teams APP ID and APP SECRET</h1>
-                            <h3><a href=<?=admin_url("/settings?group=teams-meeting-manager-settings")?>
-                                    style="margin-left:50%;">[ Teams Settings ] </a></h3>
+                            <h3><a href=<?= admin_url("/settings?group=teams-meeting-manager-settings") ?> style="margin-left:50%;">[ Teams Settings ] </a></h3>
                         </div>
                     </div>
                 </div>
@@ -28,7 +26,7 @@
 </html>
 
 <script>
-init_selectpicker();
-// Menu
-$('.menu-item-teams_meeting_manager').toggleClass('active');
+    init_selectpicker();
+    // Menu
+    $('.menu-item-teams_meeting_manager').toggleClass('active');
 </script>
