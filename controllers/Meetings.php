@@ -27,11 +27,22 @@ class Meetings extends AdminController
 		$this->microsoft = new Auth($tenant, $client_id, $client_secret, $callback, $scopes);
 	}
 
-
+	/**
+	 * login to meetings
+	 *
+	 * @return View
+	 */
 	public function login()
 	{
 		if (!staff_can('view', 'teams_meeting_manager')) {
 			show_404();
+		}
+
+		$client_id = get_option('tmm_app_id');
+		$client_secret = get_option('tmm_app_secret');
+
+		if (($client_id == '') || ($client_secret == '')) {
+			$this->load->view('missingCon');
 		}
 
 		if ($this->TeamsMeetings_model->check_user_exists()) {
@@ -52,6 +63,11 @@ class Meetings extends AdminController
 		}
 	}
 
+	/**
+	 * signin to MS
+	 *
+	 * @return Void
+	 */
 	public function signin()
 	{
 		header("location: " . $this->microsoft->getAuthUrl());
@@ -88,8 +104,17 @@ class Meetings extends AdminController
 		redirect('admin/teams_meeting_manager/meetings/index');
 	}
 
+	/**
+	 * index of meetings
+	 *
+	 * @return View
+	 */
 	public function index()
 	{
+		if (!staff_can('view', 'teams_meeting_manager')) {
+			show_404();
+		}
+		
 		$user_data = $this->TeamsMeetings_model->get_teams_user();
 		$accessToken = $user_data[0]['access_token'];
 
@@ -129,10 +154,6 @@ class Meetings extends AdminController
 			}
 			$notes_array[$meeting["id"]] = $this->TeamsMeetings_model->get_meeting_notes($meeting['id']);
 		}
-
-		
-
-
 
 		$data2 = [
 			'meetings_array' => $meetings_array,
@@ -199,6 +220,10 @@ class Meetings extends AdminController
 	 */
 	public function lunchMeeting()
 	{
+		if (!staff_can('view', 'teams_meeting_manager')) {
+			show_404();
+		}
+
 		$link = $this->input->get('mid');
 		$data = [
 			'link' => $link
@@ -213,6 +238,10 @@ class Meetings extends AdminController
 	 */
 	public function createMeeting()
 	{
+		if (!staff_can('view', 'teams_meeting_manager')) {
+			show_404();
+		}
+		
 		$user_data = $this->TeamsMeetings_model->get_teams_user();
 		$userName = $user_data[0]['user_name'];
 
@@ -242,10 +271,17 @@ class Meetings extends AdminController
 		}
 	}
 
-
+	/**
+	 * Delete a meeting
+	 *
+	 * @return void
+	 */
 	public function delete()
 	{
-
+		if (!staff_can('view', 'teams_meeting_manager')) {
+			show_404();
+		}
+		
 		$user_data = $this->TeamsMeetings_model->get_teams_user();
 		$accessToken = $user_data[0]['access_token'];
 
@@ -277,6 +313,11 @@ class Meetings extends AdminController
 		}
 	}
 
+	/**
+	 * Check Acces Token
+	 *
+	 * @return Boolean
+	 */
 	public function checkAccesToken($accessToken)
 	{
 		$curl = curl_init();
@@ -308,6 +349,11 @@ class Meetings extends AdminController
 		}
 	}
 
+	/**
+	 * Check Refrsh Token
+	 *
+	 * @return Boolean
+	 */
 	public function checkRefrshToken($accessToken)
 	{
 		$user_data = $this->TeamsMeetings_model->get_teams_user();
@@ -327,7 +373,7 @@ class Meetings extends AdminController
 	 * Get meeting notes
 	 *
 	 * @param string $meeting_id
-	 * @return 
+	 * @return Array
 	 */
 	public function get_notes($meeting_id)
 	{
@@ -342,8 +388,7 @@ class Meetings extends AdminController
 	/**
 	 * Update meeting notes
 	 *
-	 * @param string $meeting_id
-	 * @return 
+	 * @return Boolean
 	 */
 	public function update_notes()
 	{

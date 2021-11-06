@@ -94,8 +94,7 @@ function updateMeetingFormData(e) {
         meeting_id: meeting_id,
         notes: notes
     }).done(function(data) {
-        console.log('Post Saved');
-        console.log(data);
+        alert_float('success', 'Meeting notes was updated successfully');
     });
 
 }
