@@ -22,7 +22,7 @@ class Meetings extends AdminController
 		$tenant = "common";
 		$client_id = get_option('tmm_app_id');
 		$client_secret = get_option('tmm_app_secret');
-		$callback = get_option('tmm_app_redirect_uri');
+		$callback = admin_url('teams_meeting_manager/meetings/callback');
 		$scopes = ["User.Read", "Calendars.ReadWrite", "Calendars.Read", "offline_access"];
 		$this->microsoft = new Auth($tenant, $client_id, $client_secret, $callback, $scopes);
 	}
@@ -114,7 +114,7 @@ class Meetings extends AdminController
 		if (!staff_can('view', 'teams_meeting_manager')) {
 			show_404();
 		}
-		
+
 		$user_data = $this->TeamsMeetings_model->get_teams_user();
 		$accessToken = $user_data[0]['access_token'];
 
@@ -241,7 +241,7 @@ class Meetings extends AdminController
 		if (!staff_can('view', 'teams_meeting_manager')) {
 			show_404();
 		}
-		
+
 		$user_data = $this->TeamsMeetings_model->get_teams_user();
 		$userName = $user_data[0]['user_name'];
 
@@ -281,7 +281,7 @@ class Meetings extends AdminController
 		if (!staff_can('view', 'teams_meeting_manager')) {
 			show_404();
 		}
-		
+
 		$user_data = $this->TeamsMeetings_model->get_teams_user();
 		$accessToken = $user_data[0]['access_token'];
 
