@@ -239,7 +239,7 @@ class Meetings extends AdminController
 	 */
 	public function createMeeting()
 	{
-		if (!staff_can('view', 'teams_meeting_manager')) {
+		if (!staff_can('create', 'teams_meeting_manager')) {
 			show_404();
 		}
 
@@ -265,6 +265,10 @@ class Meetings extends AdminController
 	 */
 	public function create()
 	{
+		if (!staff_can('create', 'teams_meeting_manager')) {
+			show_404();
+		}
+
 		$data = $this->input->post();
 
 		if ($data) {
@@ -279,7 +283,7 @@ class Meetings extends AdminController
 	 */
 	public function delete()
 	{
-		if (!staff_can('view', 'teams_meeting_manager')) {
+		if (!staff_can('delete', 'teams_meeting_manager')) {
 			show_404();
 		}
 
