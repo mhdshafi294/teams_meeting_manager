@@ -115,9 +115,9 @@ class TeamsMeetings_model extends App_Model
     }
 
     /**
-     * Create meeting user
+     * Create meeting notes
      *
-     * @param araay $user
+     * @param araay $data
      * @return boolean
      */
     public function create_meeting_notes($data)
@@ -127,6 +127,36 @@ class TeamsMeetings_model extends App_Model
             'note' =>  'no note'
         );
         return $this->db->insert('tbltmm_notes', $data);
+    }
+
+    /**
+     * Create meeting event
+     *
+     * @param araay $data
+     * @return boolean
+     */
+    public function create_meeting_event($meeting)
+    {
+        $position = strpos($meeting["bodyPreview"], "___");
+        if(!$position==0){
+            $result = substr($meeting["bodyPreview"], 0, $position-16);
+        }else{
+            $result ='No Discription';
+        }
+        
+        $data = array(
+            'title' =>  $meeting["subject"] . " (Teams meeting)",
+            'description' =>  $result,
+            'userid' =>  get_staff_user_id(),
+            'start' =>  $meeting["start"]["dateTime"],
+            'end' =>  $meeting["end"]["dateTime"],
+            'public' =>  '0',
+            'color' =>  '#28B8DA',
+            'isstartnotified' =>  '1',
+            'reminder_before' =>  '30',
+            'reminder_before_type' =>  'minutes',
+        );
+        return $this->db->insert('tblevents', $data);
     }
 
 

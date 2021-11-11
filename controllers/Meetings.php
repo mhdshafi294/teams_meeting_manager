@@ -152,9 +152,11 @@ class Meetings extends AdminController
 		foreach ($meetings_array as $meeting) {
 			if ($this->TeamsMeetings_model->check_meeting_exists($meeting['id'])) {
 				$this->TeamsMeetings_model->create_meeting_notes($meeting['id']);
+				$this->TeamsMeetings_model->create_meeting_event($meeting);
 			}
 			$notes_array[$meeting["id"]] = $this->TeamsMeetings_model->get_meeting_notes($meeting['id']);
 		}
+
 
 		$data2 = [
 			'meetings_array' => $meetings_array,

@@ -26,8 +26,13 @@ init_head();
                             <div class="form-group">
                                 <h4><strong>Description:</strong>
                                     <?php
-                                    $position = strpos($meeting["bodyPreview"], "\r\n");
-                                    $result = substr($meeting["bodyPreview"], 0, $position);
+                                    $position = strpos($meeting["bodyPreview"], "___");
+                                    if(!$position==0){
+                                        $position = strpos($meeting["bodyPreview"], "\r\n");
+                                        $result = substr($meeting["bodyPreview"], 0, $position);
+                                    }else{
+                                        $result ='No Discription';
+                                    }
                                     echo $result;
                                     ?>
                                 </h4>
@@ -77,7 +82,8 @@ init_head();
                         <div class="col-md-6">
                             <div class="form-group">
                                 <h4>
-                                    <a href="<?= str_replace('j/', 'wc/join/', $meeting["onlineMeeting"]["joinUrl"]); ?>" target="_blank">
+                                    <a href="<?= str_replace('j/', 'wc/join/', $meeting["onlineMeeting"]["joinUrl"]); ?>"
+                                        target="_blank">
                                         <strong>Join URL</strong>
                                     </a>
                                 </h4>
@@ -112,7 +118,8 @@ init_head();
                             </div>
                         </div>
                         <div class="clearfix"></div>
-                        <a href="<?= admin_url('teams_meeting_manager/meetings/index'); ?>" class="btn btn-default btn-xs">Back To Meetings</a>
+                        <a href="<?= admin_url('teams_meeting_manager/meetings/index'); ?>"
+                            class="btn btn-default btn-xs">Back To Meetings</a>
                     </div>
                 </div>
             </div>
@@ -122,10 +129,10 @@ init_head();
 </div>
 <?php init_tail(); ?>
 <script>
-    /**
-     * Just toggles the menu to be active
-     */
-    $('.menu-item-teams_meeting_manager').toggleClass('active');
+/**
+ * Just toggles the menu to be active
+ */
+$('.menu-item-teams_meeting_manager').toggleClass('active');
 </script>
 </body>
 

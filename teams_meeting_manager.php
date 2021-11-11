@@ -42,7 +42,7 @@ function tmm_register_user_permissions()
         'delete' => _l('permission_delete'),
     ];
 
-    register_staff_capabilities('teams_meeting_manager', $capabilities, 'teams_meeting_manager');
+    register_staff_capabilities('teams_meeting_manager', $capabilities, 'Teams Meeting Manager');
 }
 
 /**
