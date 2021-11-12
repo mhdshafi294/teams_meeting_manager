@@ -42,13 +42,15 @@ $CI->db->query("CREATE TABLE IF NOT EXISTS `" . "tbltmm_notes" . "` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
-// table notes
-$CI->db->query("CREATE TABLE IF NOT EXISTS `" . "tbltmm_notes" . "` (
+// table related
+$CI->db->query("CREATE TABLE IF NOT EXISTS `" . "tbltmm_related" . "` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `meeting_id` VARCHAR(191) NOT NULL,
   `rel_id` INT(11) DEFAULT NULL,
-  `note` varchar(30) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `rel_type` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  INDEX (`rel_id`),
+  INDEX (`rel_type`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
 
