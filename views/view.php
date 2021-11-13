@@ -31,42 +31,41 @@ init_head();
                                         <label for="rel_type"
                                             class="control-label"><?php echo _l('task_related_to'); ?></label>
                                         <select name="rel_type" class="selectpicker" id="rel_type" data-width="100%"
-                                            data-none-selected-text="<?php echo _l('dropdown_non_selected_tex'); ?>"
-                                            value="<?php echo isset($relation['rel_type']) ? $relation['rel_type'] : ''; ?>">
+                                            data-none-selected-text="<?php echo _l('dropdown_non_selected_tex'); ?>">
                                             <option value=""></option>
                                             <option value="project"
-                                                <?php if(isset($task) || $this->input->get('rel_type')){if($rel_type == 'project'){echo 'selected';}} ?>>
+                                                <?php if(isset($relation['rel_type']) || $this->input->get('rel_type')){if($relation['rel_type'] == 'project'){echo 'selected';}} ?>>
                                                 <?php echo _l('project'); ?></option>
                                             <option value="invoice"
-                                                <?php if(isset($task) || $this->input->get('rel_type')){if($rel_type == 'invoice'){echo 'selected';}} ?>>
+                                                <?php if(isset($relation['rel_type']) || $this->input->get('rel_type')){if($relation['rel_type'] == 'invoice'){echo 'selected';}} ?>>
                                                 <?php echo _l('invoice'); ?>
                                             </option>
                                             <option value="customer"
-                                                <?php if(isset($task) || $this->input->get('rel_type')){if($rel_type == 'customer'){echo 'selected';}} ?>>
+                                                <?php if(isset($relation['rel_type']) || $this->input->get('rel_type')){if($relation['rel_type'] == 'customer'){echo 'selected';}} ?>>
                                                 <?php echo _l('client'); ?>
                                             </option>
                                             <option value="estimate"
-                                                <?php if(isset($task) || $this->input->get('rel_type')){if($rel_type == 'estimate'){echo 'selected';}} ?>>
+                                                <?php if(isset($relation['rel_type']) || $this->input->get('rel_type')){if($relation['rel_type'] == 'estimate'){echo 'selected';}} ?>>
                                                 <?php echo _l('estimate'); ?>
                                             </option>
                                             <option value="contract"
-                                                <?php if(isset($task) || $this->input->get('rel_type')){if($rel_type == 'contract'){echo 'selected';}} ?>>
+                                                <?php if(isset($relation['rel_type']) || $this->input->get('rel_type')){if($relation['rel_type'] == 'contract'){echo 'selected';}} ?>>
                                                 <?php echo _l('contract'); ?>
                                             </option>
                                             <option value="ticket"
-                                                <?php if(isset($task) || $this->input->get('rel_type')){if($rel_type == 'ticket'){echo 'selected';}} ?>>
+                                                <?php if(isset($relation['rel_type']) || $this->input->get('rel_type')){if($relation['rel_type'] == 'ticket'){echo 'selected';}} ?>>
                                                 <?php echo _l('ticket'); ?>
                                             </option>
                                             <option value="expense"
-                                                <?php if(isset($task) || $this->input->get('rel_type')){if($rel_type == 'expense'){echo 'selected';}} ?>>
+                                                <?php if(isset($relation['rel_type']) || $this->input->get('rel_type')){if($relation['rel_type'] == 'expense'){echo 'selected';}} ?>>
                                                 <?php echo _l('expense'); ?>
                                             </option>
                                             <option value="lead"
-                                                <?php if(isset($task) || $this->input->get('rel_type')){if($rel_type == 'lead'){echo 'selected';}} ?>>
+                                                <?php if(isset($relation['rel_type']) || $this->input->get('rel_type')){if($relation['rel_type'] == 'lead'){echo 'selected';}} ?>>
                                                 <?php echo _l('lead'); ?>
                                             </option>
                                             <option value="proposal"
-                                                <?php if(isset($task) || $this->input->get('rel_type')){if($rel_type == 'proposal'){echo 'selected';}} ?>>
+                                                <?php if(isset($relation['rel_type']) || $this->input->get('rel_type')){if($relation['rel_type'] == 'proposal'){echo 'selected';}} ?>>
                                                 <?php echo _l('proposal'); ?>
                                             </option>
                                             <?php
@@ -83,11 +82,10 @@ init_head();
                                         <div id="rel_id_select">
                                             <select name="rel_id" id="rel_id" class="ajax-sesarch" data-width="100%"
                                                 data-live-search="true"
-                                                data-none-selected-text="<?php echo _l('dropdown_non_selected_tex'); ?>"
-                                                value="<?php echo isset($relation['rel_id']) ? $relation['rel_id'] : ''; ?>">
-                                                <?php if($rel_id != '' && $rel_type != ''){
-                              $rel_data = get_relation_data($rel_type,$rel_id);
-                              $rel_val = get_relation_values($rel_data,$rel_type);
+                                                data-none-selected-text="<?php echo _l('dropdown_non_selected_tex'); ?>">
+                                                <?php if($relation['rel_id'] != '' && $relation['rel_type'] != ''){
+                              $rel_data = get_relation_data($relation['rel_type'],$relation['rel_id']);
+                              $rel_val = get_relation_values($rel_data,$relation['rel_type']);
                               echo '<option value="'.$rel_val['id'].'" selected>'.$rel_val['name'].'</option>';
                               } ?>
                                             </select>

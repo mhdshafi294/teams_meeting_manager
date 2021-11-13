@@ -4,7 +4,6 @@
  * Ensures that the module init file can't be accessed directly, only within the application.
  */
 defined('BASEPATH') or exit('No direct script access allowed');
-
 /*
 Module Name: Teams Meeting Manager
 Description: Manages Teams Meetings
@@ -84,6 +83,36 @@ function tmm_add_settings_tab()
     }
 }
 
+/**
+ * @return void
+ */
+function tmm_add_projects_tab()
+{
+    
+        $CI = &get_instance();
+        $CI->app_tabs->add_project_tab('teams-meeting-manager-projects', [
+            'name'     => 'Teams Meetings Manager',
+            'view'     => 'teams_meeting_manager/view',
+            'position' => 1,
+        ]);
+    
+}
+
+/**
+ * @return void
+ */
+function tmm_add_customers_tab()
+{
+    
+        $CI = &get_instance();
+        $CI->app_tabs->add_customer_tab('teams-meeting-manager-projects', [
+            'name'     => 'Teams Meetings Manager',
+            'view'     => 'teams_meeting_manager/view',
+            'position' => 1,
+        ]);
+    
+}
+
 if (!function_exists('tmm_head_components')) {
     /**
      * Injects module CSS
@@ -121,3 +150,11 @@ function tmm_theme_activation_hook()
 }
 
 //register_payment_gateway('example_gateway', 'teams_meeting_manager');
+
+
+/* $CI->app_tabs->add_project_tab('project_overview', [
+    'name'     => 'Teams Meetings',
+    'icon'     => 'fa fa-th',
+    'view'     => 'admin/projects/project_overview',
+    'position' => 5,
+]); */
