@@ -152,6 +152,7 @@ class Meetings extends AdminController
 		foreach ($meetings_array as $meeting) {
 			if ($this->TeamsMeetings_model->check_meeting_exists($meeting['id'])) {
 				$this->TeamsMeetings_model->create_meeting_notes($meeting['id']);
+				$this->TeamsMeetings_model->create_meeting_related($meeting['id']);
 				$this->TeamsMeetings_model->create_meeting_event($meeting);
 			}
 			$notes_array[$meeting["id"]] = $this->TeamsMeetings_model->get_meeting_notes($meeting['id']);
@@ -207,8 +208,14 @@ class Meetings extends AdminController
 
 			curl_close($curl);
 			$meeting = json_decode($response, true);
+			$relation = $this->TeamsMeetings_model->get_meeting_related($id);
 
 			$data['meeting'] = $meeting;
+			$data['relation'] = $relation;
+			/* $data = [
+				'meeting_id' => $request['meeting_id'],
+				'note' => $request['notes']
+			]; */ 
 		} else {
 			show_404();
 		}
@@ -239,7 +246,7 @@ class Meetings extends AdminController
 	 *
 	 * @return view
 	 */
-	public function createMeeting()
+	/* public function createMeeting()
 	{
 		if (!staff_can('create', 'teams_meeting_manager')) {
 			show_404();
@@ -258,14 +265,14 @@ class Meetings extends AdminController
 		];
 
 		$this->load->view('create', $data);
-	}
+	} */
 
 	/**
 	 * Create new meeting
 	 *
 	 * @return void
 	 */
-	public function create()
+	/* public function create()
 	{
 		if (!staff_can('create', 'teams_meeting_manager')) {
 			show_404();
@@ -276,7 +283,7 @@ class Meetings extends AdminController
 		if ($data) {
 			var_dump($data);
 		}
-	}
+	} */
 
 	/**
 	 * Delete a meeting
@@ -376,6 +383,7 @@ class Meetings extends AdminController
 			return false;
 		}
 	}
+	
 	/**
 	 * Get meeting notes
 	 *
@@ -416,4 +424,48 @@ class Meetings extends AdminController
 
 		return $this->TeamsMeetings_model->update_meeting_notes($data);
 	}
+
+	/**
+	 * Get meeting related
+	 *
+	 * @param string $meeting_id
+	 * @return Array
+	 */
+	public function get_related($meeting_id)
+	{
+		if (!staff_can('view', 'teams_meeting_manager')) {
+			show_404();
+		}
+
+		return $this->TeamsMeetings_model->get_meeting_related($meeting_id);
+	}
+
+	/**
+	 * Update meeting related
+	 *
+	 * @return Boolean
+	 */
+	public function update_related()
+	{
+		if (!staff_can('view', 'teams_meeting_manager')) {
+			show_404();
+		}
+
+		$request = $this->input->post();
+		echo $request['meeting_id'] . "<br>";
+		echo $request['rel_type'] . "<br>";
+		echo $request['rel_id'];
+
+		if ($request) {
+			$data = [
+				'meeting_id' => $request['meeting_id'],
+				'rel_type' => $request['rel_type'],
+				'rel_id' => $request['rel_id']
+			];
+		}
+
+		return $this->TeamsMeetings_model->update_meeting_related($data);
+	}
+
+	
 }

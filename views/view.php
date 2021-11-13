@@ -6,6 +6,7 @@
 init_head();
 ?>
 
+
 <div id="wrapper">
     <div class="content">
         <div class="row">
@@ -24,14 +25,14 @@ init_head();
                                 <hr>
                             </div>
 
-
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="rel_type"
                                             class="control-label"><?php echo _l('task_related_to'); ?></label>
                                         <select name="rel_type" class="selectpicker" id="rel_type" data-width="100%"
-                                            data-none-selected-text="<?php echo _l('dropdown_non_selected_tex'); ?>">
+                                            data-none-selected-text="<?php echo _l('dropdown_non_selected_tex'); ?>"
+                                            value="<?php echo isset($relation['rel_type']) ? $relation['rel_type'] : ''; ?>">
                                             <option value=""></option>
                                             <option value="project"
                                                 <?php if(isset($task) || $this->input->get('rel_type')){if($rel_type == 'project'){echo 'selected';}} ?>>
@@ -82,7 +83,8 @@ init_head();
                                         <div id="rel_id_select">
                                             <select name="rel_id" id="rel_id" class="ajax-sesarch" data-width="100%"
                                                 data-live-search="true"
-                                                data-none-selected-text="<?php echo _l('dropdown_non_selected_tex'); ?>">
+                                                data-none-selected-text="<?php echo _l('dropdown_non_selected_tex'); ?>"
+                                                value="<?php echo isset($relation['rel_id']) ? $relation['rel_id'] : ''; ?>">
                                                 <?php if($rel_id != '' && $rel_type != ''){
                               $rel_data = get_relation_data($rel_type,$rel_id);
                               $rel_val = get_relation_values($rel_data,$rel_type);
@@ -93,8 +95,12 @@ init_head();
                                     </div>
                                 </div>
                             </div>
-
-
+                            <div>
+                                <button type="submit" class="btn btn-info" onclick="updateMeetingRelation(this)"
+                                    data-id="<?= $meeting["id"]; ?>">Save
+                                </button>
+                            </div>
+                            <hr>
                             <div class="form-group">
                                 <h4><strong>Description:</strong>
                                     <?php
@@ -161,6 +167,7 @@ init_head();
                                 </h4>
                                 <hr>
                             </div>
+
                             <div class="form-group">
                                 <h4><strong>Meeting Type:</strong>
                                     <?= $meeting["type"] ?></h4>
@@ -184,12 +191,13 @@ init_head();
                                     foreach ($meeting["attendees"] as $attend) {
                                         echo '<br>' . $attend["emailAddress"]["name"];
                                     }
-
                                     ?>
                                     <hr>
                             </div>
                         </div>
+
                         <div class="clearfix"></div>
+
                         <a href="<?= admin_url('teams_meeting_manager/meetings/index'); ?>"
                             class="btn btn-default btn-xs">Back To Meetings</a>
                     </div>
@@ -199,6 +207,7 @@ init_head();
     </div>
 </div>
 </div>
+
 <?php init_tail(); ?>
 <script>
 /**
@@ -386,6 +395,25 @@ function reset_task_duedate_input() {
     $duedate.removeAttr('data-date-end-date');
     $duedate.datetimepicker('destroy');
     init_datepicker($duedate);
+}
+</script>
+
+<script>
+function updateMeetingRelation(e) {
+
+    var meeting_id = jQuery(e).attr('data-id');
+    var rel_type = $("#rel_type").val();
+    var rel_id = $("#rel_id").val();
+    var url = "<?= admin_url('teams_meeting_manager/meetings/update_related') ?>";
+
+    $.post(url, {
+        meeting_id: meeting_id,
+        rel_type: rel_type,
+        rel_id: rel_id
+    }).done(function(data) {
+        alert_float('success', 'Meeting related was updated successfully');
+    });
+
 }
 </script>
 

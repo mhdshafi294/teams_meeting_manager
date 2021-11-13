@@ -129,7 +129,72 @@ class TeamsMeetings_model extends App_Model
         return $this->db->insert('tbltmm_notes', $data);
     }
 
+
     /**
+     * Get a meeting note
+     *
+     * @param string $meeting_id
+     * @return araay
+     */
+    public function get_meeting_notes($meeting_id)
+    {
+        $query = $this->db->get_where('tbltmm_notes', array('meeting_id' => $meeting_id));
+        return $query->row_array();
+    }
+
+    /**
+     * Update Meeting notes
+     *
+     * @return boolean
+     */
+    public function update_meeting_notes($data)
+    {
+        $this->db->where('meeting_id', $data['meeting_id']);
+        $this->db->update('tbltmm_notes', $data);
+        $query = $this->db->get_where('tbltmm_notes', array('meeting_id' => $data['meeting_id']));
+        return $query->row_array();
+    }
+
+    /**
+     * Create meeting related
+     *
+     * @param araay $data
+     * @return boolean
+     */
+    public function create_meeting_related($data)
+    {
+        $data = array(
+            'meeting_id' =>  $data
+        );
+        return $this->db->insert('tbltmm_related', $data);
+    }
+
+    /**
+     * Get a meeting related
+     *
+     * @param string $meeting_id
+     * @return araay
+     */
+    public function get_meeting_related($meeting_id)
+    {
+        $query = $this->db->get_where('tbltmm_related', array('meeting_id' => $meeting_id));
+        return $query->row_array();
+    }
+
+    /**
+     * Update Meeting related
+     *
+     * @return boolean
+     */
+    public function update_meeting_related($data)
+    {
+        $this->db->where('meeting_id', $data['meeting_id']);
+        $this->db->update('tbltmm_related', $data);
+        $query = $this->db->get_where('tbltmm_related', array('meeting_id' => $data['meeting_id']));
+        return $query->row_array();
+    }
+
+        /**
      * Create meeting event
      *
      * @param araay $data
@@ -157,32 +222,6 @@ class TeamsMeetings_model extends App_Model
             'reminder_before_type' =>  'minutes',
         );
         return $this->db->insert('tblevents', $data);
-    }
-
-
-    /**
-     * Get a meeting note
-     *
-     * @param string $meeting_id
-     * @return araay
-     */
-    public function get_meeting_notes($meeting_id)
-    {
-        $query = $this->db->get_where('tbltmm_notes', array('meeting_id' => $meeting_id));
-        return $query->row_array();
-    }
-
-    /**
-     * Check user exists
-     *
-     * @return boolean
-     */
-    public function update_meeting_notes($data)
-    {
-        $this->db->where('meeting_id', $data['meeting_id']);
-        $this->db->update('tbltmm_notes', $data);
-        $query = $this->db->get_where('tbltmm_notes', array('meeting_id' => $data['meeting_id']));
-        return $query->row_array();
     }
 
     /**
