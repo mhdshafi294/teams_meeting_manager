@@ -86,31 +86,29 @@ function tmm_add_settings_tab()
 /**
  * @return void
  */
-function tmm_add_projects_tab()
+function tmm_add_project_tab()
 {
-    
-        $CI = &get_instance();
-        $CI->app_tabs->add_project_tab('teams-meeting-manager-projects', [
-            'name'     => 'Teams Meetings Manager',
-            'view'     => 'teams_meeting_manager/view',
-            'position' => 1,
-        ]);
-    
+    $CI = &get_instance();
+    $CI->app_tabs->add_project_tab('teams-meeting-manager-project', [
+        'name'     => 'Teams Meetings Manager',
+        'icon'     => 'fa fa-phone',
+        'view'     => 'teams_meeting_manager/view',
+        'position' => 20,
+    ]);
 }
 
 /**
  * @return void
  */
-function tmm_add_customers_tab()
+function tmm_add_customer_tab()
 {
-    
-        $CI = &get_instance();
-        $CI->app_tabs->add_customer_tab('teams-meeting-manager-projects', [
-            'name'     => 'Teams Meetings Manager',
-            'view'     => 'teams_meeting_manager/view',
-            'position' => 1,
-        ]);
-    
+    $CI = &get_instance();
+    $CI->app_tabs->add_customer_tab('teams-meeting-manager-customer', [
+        'name'     => 'Teams Meetings Manager',
+        'icon'     => 'fa fa-phone',
+        'view'     => 'teams_meeting_manager/view',
+        'position' => 20,
+    ]);
 }
 
 if (!function_exists('tmm_head_components')) {

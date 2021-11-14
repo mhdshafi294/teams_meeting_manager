@@ -1,4 +1,8 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
+
+<head>
+     <title>Teams Meetings Maneger</title>
+</head>
 <?php init_head(); ?>
 <div id="wrapper">
      <div class="content">
