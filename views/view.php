@@ -104,14 +104,13 @@ init_head();
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <?php $relation['rel_id'] = isset($relation['rel_id']) ? $relation['rel_id'] : '' ?>
-                                    <div class="form-group<?php if ($relation['rel_id'] == '') {
+                                    <div class="form-group<?php if (isset($relation['rel_id'])) {
                                                                 echo ' hide';
-                                                            } ?>" id="r$relation['rel_id']el_id_wrapper">
+                                                            } ?>" id="rel_id_wrapper">
                                         <label for="rel_id" class="control-label"><span class="rel_id_label"></span></label>
                                         <div id="rel_id_select">
                                             <select name="rel_id" id="rel_id" class="ajax-sesarch" data-width="100%" data-live-search="true" data-none-selected-text="<?php echo _l('dropdown_non_selected_tex'); ?>">
-                                                <?php if ($relation['rel_id'] != '' && $relation['rel_type'] != '') {
+                                                <?php if ($rel_id != '' && $rel_type != '') {
                                                     $rel_data = get_relation_data($relation['rel_type'], $relation['rel_id']);
                                                     $rel_val = get_relation_values($rel_data, $relation['rel_type']);
                                                     echo '<option value="' . $rel_val['id'] . '" selected>' . $rel_val['name'] . '</option>';
@@ -256,8 +255,7 @@ init_head();
 
         $("body").off("change", "#rel_id");
 
-        var inner_popover_template =
-            '<div class="popover"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"></div></div></div>';
+        var inner_popover_template = '<div class="popover"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"></div></div></div>';
 
         $('#_task_modal .task-menu-options .trigger').popover({
             html: true,
@@ -309,45 +307,44 @@ init_head();
         $('body').on('change', '#rel_id', function() {
             if ($(this).val() != '') {
                 if (_rel_type.val() == 'project') {
-                    $.get(admin_url + 'projects/get_rel_project_data/' + $(this).val() + '/' + taskid,
-                        function(project) {
-                            $("select[name='milestone']").html(project.milestones);
-                            if (typeof(_milestone_selected_data) != 'undefined') {
-                                $("select[name='milestone']").val(_milestone_selected_data.id);
-                                $('input[name="duedate"]').val(_milestone_selected_data.due_date)
-                            }
-                            $("select[name='milestone']").selectpicker('refresh');
+                    $.get(admin_url + 'projects/get_rel_project_data/' + $(this).val() + '/' + taskid, function(project) {
+                        $("select[name='milestone']").html(project.milestones);
+                        if (typeof(_milestone_selected_data) != 'undefined') {
+                            $("select[name='milestone']").val(_milestone_selected_data.id);
+                            $('input[name="duedate"]').val(_milestone_selected_data.due_date)
+                        }
+                        $("select[name='milestone']").selectpicker('refresh');
 
-                            $("#assignees").html(project.assignees);
-                            if (typeof(_current_member) != 'undefined') {
-                                $("#assignees").val(_current_member);
-                            }
-                            $("#assignees").selectpicker('refresh')
-                            if (project.billing_type == 3) {
-                                $('.task-hours').addClass('project-task-hours');
-                            } else {
-                                $('.task-hours').removeClass('project-task-hours');
-                            }
+                        $("#assignees").html(project.assignees);
+                        if (typeof(_current_member) != 'undefined') {
+                            $("#assignees").val(_current_member);
+                        }
+                        $("#assignees").selectpicker('refresh')
+                        if (project.billing_type == 3) {
+                            $('.task-hours').addClass('project-task-hours');
+                        } else {
+                            $('.task-hours').removeClass('project-task-hours');
+                        }
 
-                            if (project.deadline) {
-                                var $duedate = $('#_task_modal #duedate');
-                                var currentSelectedTaskDate = $duedate.val();
-                                $duedate.attr('data-date-end-date', project.deadline);
-                                $duedate.datetimepicker('destroy');
-                                init_datepicker($duedate);
+                        if (project.deadline) {
+                            var $duedate = $('#_task_modal #duedate');
+                            var currentSelectedTaskDate = $duedate.val();
+                            $duedate.attr('data-date-end-date', project.deadline);
+                            $duedate.datetimepicker('destroy');
+                            init_datepicker($duedate);
 
-                                if (currentSelectedTaskDate) {
-                                    var dateTask = new Date(unformat_date(currentSelectedTaskDate));
-                                    var projectDeadline = new Date(project.deadline);
-                                    if (dateTask > projectDeadline) {
-                                        $duedate.val(project.deadline_formatted);
-                                    }
+                            if (currentSelectedTaskDate) {
+                                var dateTask = new Date(unformat_date(currentSelectedTaskDate));
+                                var projectDeadline = new Date(project.deadline);
+                                if (dateTask > projectDeadline) {
+                                    $duedate.val(project.deadline_formatted);
                                 }
-                            } else {
-                                reset_task_duedate_input();
                             }
-                            init_project_details(_rel_type.val(), project.allow_to_view_tasks);
-                        }, 'json');
+                        } else {
+                            reset_task_duedate_input();
+                        }
+                        init_project_details(_rel_type.val(), project.allow_to_view_tasks);
+                    }, 'json');
 
 
 
@@ -418,25 +415,6 @@ init_head();
         $duedate.removeAttr('data-date-end-date');
         $duedate.datetimepicker('destroy');
         init_datepicker($duedate);
-    }
-</script>
-
-<script>
-    function updateMeetingRelation(e) {
-
-        var meeting_id = jQuery(e).attr('data-id');
-        var rel_type = $("#rel_type").val();
-        var rel_id = $("#rel_id").val();
-        var url = "<?= admin_url('teams_meeting_manager/meetings/update_related') ?>";
-
-        $.post(url, {
-            meeting_id: meeting_id,
-            rel_type: rel_type,
-            rel_id: rel_id
-        }).done(function(data) {
-            alert_float('success', 'Meeting related was updated successfully');
-        });
-
     }
 </script>
 
