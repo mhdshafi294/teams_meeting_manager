@@ -27,12 +27,19 @@ class Meetings extends AdminController
 		$this->microsoft = new Auth($tenant, $client_id, $client_secret, $callback, $scopes);
 	}
 
+	public function logout()
+	{
+
+		$this->TeamsMeetings_model->logout();
+		redirect(admin_url('teams_meeting_manager/meetings/index'));
+	}
+
 	/**
 	 * login to meetings
 	 *
 	 * @return View
 	 */
-	public function login()
+	public function index()
 	{
 		if (!staff_can('view', 'teams_meeting_manager')) {
 			show_404();
@@ -53,10 +60,10 @@ class Meetings extends AdminController
 			$accessToken = $user_data[0]['access_token'];;
 
 			if ($this->checkAccesToken($accessToken)) {
-				$this->index();
+				$this->mainTable();
 			} else {
 				if ($this->checkRefrshToken($accessToken)) {
-					$this->index();
+					$this->mainTable();
 				} else {
 					$this->signin();
 				}
@@ -102,7 +109,7 @@ class Meetings extends AdminController
 			$this->TeamsMeetings_model->update_teams_user($user_data);
 		}
 
-		redirect('admin/teams_meeting_manager/meetings/index');
+		redirect('admin/teams_meeting_manager/meetings');
 	}
 
 	/**
@@ -110,11 +117,14 @@ class Meetings extends AdminController
 	 *
 	 * @return View
 	 */
-	public function index()
+	public function mainTable()
 	{
 		if (!staff_can('view', 'teams_meeting_manager')) {
 			show_404();
 		}
+
+		if ($this->TeamsMeetings_model->check_user_exists())
+			redirect(admin_url('teams_meeting_manager/meetings/login'));
 
 		$user_data = $this->TeamsMeetings_model->get_teams_user();
 		$accessToken = $user_data[0]['access_token'];
@@ -215,7 +225,7 @@ class Meetings extends AdminController
 			/* $data = [
 				'meeting_id' => $request['meeting_id'],
 				'note' => $request['notes']
-			]; */ 
+			]; */
 		} else {
 			show_404();
 		}
@@ -323,7 +333,7 @@ class Meetings extends AdminController
 			curl_close($curl);
 			echo $response;
 
-			redirect('admin/teams_meeting_manager/meetings/index');
+			redirect('admin/teams_meeting_manager/meetings');
 		}
 	}
 
@@ -383,7 +393,7 @@ class Meetings extends AdminController
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Get meeting notes
 	 *
@@ -466,6 +476,4 @@ class Meetings extends AdminController
 
 		return $this->TeamsMeetings_model->update_meeting_related($data);
 	}
-
-	
 }

@@ -1,4 +1,8 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
+
+<head>
+    <title>Teams Meetings Maneger</title>
+</head>
 <?php
 /**
  * Current meeting
@@ -352,9 +356,12 @@ init_head();
             }
         });
 
-        <?php if (!isset($task) && $rel_id != '') { ?>
-            _rel_id.change();
-        <?php } ?>
+        <
+        !-- -- > <?php //if (!isset($task) && $rel_id != '') { 
+                    ?>
+        //            _rel_id.change();
+        //        <?php //} 
+                    ?>
 
         _rel_type.on('changed.bs.select', function(e, clickedIndex, isSelected, previousValue) {
             if (previousValue == 'project') {

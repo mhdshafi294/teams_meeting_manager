@@ -54,7 +54,7 @@ function tmm_register_menu_items()
     if (staff_can('view')) {
         $CI->app_menu->add_sidebar_menu_item(TEAMS_MEETING_MANAGER_MODULE_NAME, [
             'name'     => 'Teams Meetings',
-            'href'     => admin_url('teams_meeting_manager/meetings/login'),
+            'href'     => admin_url('teams_meeting_manager/meetings'),
             'icon'     => 'fa fa-phone',
             'position' => 25,
         ]);
@@ -76,7 +76,7 @@ function tmm_add_settings_tab()
     if (is_admin()) {
         $CI = &get_instance();
         $CI->app_tabs->add_settings_tab('teams-meeting-manager-settings', [
-            'name'     => 'Teams Meeting Manager',
+            'name'     => 'Teams Meetings',
             'view'     => 'teams_meeting_manager/settings',
             'position' => 32,
         ]);
@@ -90,12 +90,13 @@ function tmm_add_project_tab()
 {
     $CI = &get_instance();
     $CI->app_tabs->add_project_tab('teams-meeting-manager-project', [
-        'name'     => 'Teams Meetings Manager',
+        'name'     => 'Teams Meetings',
         'icon'     => 'fa fa-phone',
-        'view'     => 'teams_meeting_manager/view',
+        'view'     => 'teams_meeting_manager/groups/project_meetings',
         'position' => 20,
     ]);
 }
+tmm_add_project_tab();
 
 /**
  * @return void
@@ -103,13 +104,15 @@ function tmm_add_project_tab()
 function tmm_add_customer_tab()
 {
     $CI = &get_instance();
-    $CI->app_tabs->add_customer_tab('teams-meeting-manager-customer', [
-        'name'     => 'Teams Meetings Manager',
+    $CI->app_tabs->add_customer_profile_tab('teams-meeting-manager-customer', [
+        'name'     => 'Teams Meetings',
         'icon'     => 'fa fa-phone',
-        'view'     => 'teams_meeting_manager/view',
+        'view'     => 'teams_meeting_manager/groups/customer_meetings',
         'position' => 20,
     ]);
 }
+tmm_add_customer_tab();
+
 
 if (!function_exists('tmm_head_components')) {
     /**

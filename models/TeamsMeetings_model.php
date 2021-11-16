@@ -17,6 +17,12 @@ class TeamsMeetings_model extends App_Model
         return $query->row_array();
     }
 
+    public function logout()
+    {
+        $this->db->where('user_id', get_staff_user_id());
+        return $this->db->delete(db_prefix() . 'tmm');
+    }
+
     /**
      * Create meeting user
      *
