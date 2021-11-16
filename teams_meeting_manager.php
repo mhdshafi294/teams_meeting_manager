@@ -92,7 +92,7 @@ function tmm_add_project_tab()
     $CI->app_tabs->add_project_tab('teams-meeting-manager-project', [
         'name'     => 'Teams Meetings',
         'icon'     => 'fa fa-phone',
-        'view'     => 'teams_meeting_manager/groups/project_meetings',
+        'view'     => 'teams_meeting_manager/groups/meetings_project',
         'position' => 20,
     ]);
 }

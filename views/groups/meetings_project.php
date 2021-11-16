@@ -40,13 +40,18 @@ curl_close($curl);
 $arr = json_decode($response, true);
 $meetings_array = [];
 
+/* foreach ($arr["value"] as $meeting) {
+    if ($meeting["isOnlineMeeting"] && $meeting["onlineMeetingProvider"] == "teamsForBusiness") {
+        $met = $this->TeamsMeetings_model->get_meeting_related($meeting["id"]);
+        if ($met["rel_type"] == "project" && $met["rel_type"] == $project->id) {
+            $meetings_array[] = $meeting;
+        }
+    }
+} */
+
 foreach ($arr["value"] as $meeting) {
     if ($meeting["isOnlineMeeting"] && $meeting["onlineMeetingProvider"] == "teamsForBusiness") {
         $meetings_array[] = $meeting;
-        /* $met = $this->TeamsMeetings_model->get_meeting_related($meeting["id"]);
-        if ($met["rel_type"] == "customer" && $met["rel_type"] == $client->id) {
-            $meetings_array[] = $meeting;
-        } */
     }
 }
 
