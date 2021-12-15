@@ -1,4 +1,23 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
+
+<?php
+$this->load->model('teams_meeting_manager/TeamsMeetings_model');
+
+if (!staff_can('view', 'teams_meeting_manager')) {
+    show_404();
+}
+
+if ($this->TeamsMeetings_model->check_user_exists())
+    redirect(admin_url('teams_meeting_manager/meetings/login'));
+
+$user_data = $this->TeamsMeetings_model->get_teams_user();
+$accessToken = $user_data[0]['access_token'];
+
+if (!$this->TeamsMeetings_model->checkAccesToken($accessToken)) {
+    redirect(admin_url('teams_meeting_manager/meetings/index'));
+}
+?>
+
 <?php
 /**
  * Current meeting
@@ -50,6 +69,13 @@ init_head();
                                                                             }
                                                                         } ?>>
                                                 <?php echo _l('client'); ?>
+                                            </option>
+                                            <option value="task" <?php if (isset($relation['rel_type']) || $this->input->get('rel_type')) {
+                                                                        if ($relation['rel_type'] == 'task') {
+                                                                            echo 'selected';
+                                                                        }
+                                                                    } ?>>
+                                                <?php echo "Task" ?>
                                             </option>
                                             <option value="estimate" <?php if (isset($relation['rel_type']) || $this->input->get('rel_type')) {
                                                                             if ($relation['rel_type'] == 'estimate') {

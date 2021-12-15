@@ -23,6 +23,32 @@ class TeamsMeetings_model extends App_Model
         return $this->db->delete(db_prefix() . 'tmm');
     }
 
+
+    /**
+     * Delete meeting id
+     *
+     * @param araay $user
+     * @return boolean
+     */
+    public function delete_teams_meeting($id)
+    {
+        $this->delete_teams_meeting_related($id);
+        $this->db->where('meeting_id', $id);
+        $this->db->delete(db_prefix() . 'tmm_notes');
+    }
+
+    /**
+     * Delete meeting id
+     *
+     * @param araay $user
+     * @return boolean
+     */
+    public function delete_teams_meeting_related($id)
+    {
+        $this->db->where('meeting_id', $id);
+        $this->db->delete(db_prefix() . 'tmm_related');
+    }
+
     /**
      * Create meeting user
      *
@@ -200,7 +226,7 @@ class TeamsMeetings_model extends App_Model
         return $query->row_array();
     }
 
-        /**
+    /**
      * Create meeting event
      *
      * @param araay $data
@@ -209,12 +235,12 @@ class TeamsMeetings_model extends App_Model
     public function create_meeting_event($meeting)
     {
         $position = strpos($meeting["bodyPreview"], "___");
-        if(!$position==0){
-            $result = substr($meeting["bodyPreview"], 0, $position-16);
-        }else{
-            $result ='No Discription';
+        if (!$position == 0) {
+            $result = substr($meeting["bodyPreview"], 0, $position - 16);
+        } else {
+            $result = 'No Discription';
         }
-        
+
         $data = array(
             'title' =>  $meeting["subject"] . " (Teams meeting)",
             'description' =>  $result,
@@ -242,6 +268,42 @@ class TeamsMeetings_model extends App_Model
             return true;
         } else {
             return false;
+        }
+    }
+
+    /**
+     * Check Acces Token
+     *
+     * @return Boolean
+     */
+    public function checkAccesToken($accessToken)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://graph.microsoft.com/v1.0/me',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $accessToken
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        $response = json_decode($response, true);
+
+        if (isset($response["error"])) {
+            return false;
+        } else {
+            return true;
         }
     }
 }

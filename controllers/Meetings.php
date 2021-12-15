@@ -331,7 +331,9 @@ class Meetings extends AdminController
 			$response = curl_exec($curl);
 
 			curl_close($curl);
-			echo $response;
+			/* echo $response; */
+
+			$this->TeamsMeetings_model->delete_teams_meeting($id);
 
 			redirect('admin/teams_meeting_manager/meetings');
 		}

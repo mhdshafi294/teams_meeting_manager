@@ -17,7 +17,10 @@
 
                     <a href="<?= admin_url('teams_meeting_manager/meetings/view/?mid=' . $meeting["id"] . ''); ?>">view</a>
 
-                    | <a data-toggle="collapse" title="Notes" data-id="<?= $meeting["id"]; ?>" style="cursor:pointer;" href="#<?= $meeting["id"] . "multiCollapseExample1"  ?> " role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Notes</a>
+                    |
+                    <?php $noteMeetingId = str_replace("=", "eq", $meeting["id"] . "multiCollapseExample1"); ?>
+
+                    <a data-toggle="collapse" title="Notes" data-id="<?= $meeting["id"]; ?>" style="cursor:pointer;" href="#<?= $noteMeetingId ?>" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">notes</a>
 
                     <?php
                     if (staff_can('delete', 'teams_meeting_manager')) : ?>
@@ -45,7 +48,7 @@
             </td>
             <td>
                 <div class="col">
-                    <div class="collapse multi-collapse" id="<?= $meeting['id'] . 'multiCollapseExample1'  ?>">
+                    <div class="collapse multi-collapse" id="<?= $noteMeetingId ?>">
                         <div class="edit_meeting_notes">
                             <div class="panel panel-info">
                                 <div class="panel-heading">

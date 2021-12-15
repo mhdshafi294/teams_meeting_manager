@@ -107,7 +107,7 @@ function tmm_add_customer_tab()
     $CI->app_tabs->add_customer_profile_tab('teams-meeting-manager-customer', [
         'name'     => 'Teams Meetings',
         'icon'     => 'fa fa-phone',
-        'view'     => 'teams_meeting_manager/groups/customer_meetings',
+        'view'     => 'teams_meeting_manager/groups/meetings_customer',
         'position' => 20,
     ]);
 }

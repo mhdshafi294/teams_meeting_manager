@@ -11,11 +11,9 @@ if ($this->TeamsMeetings_model->check_user_exists())
 $user_data = $this->TeamsMeetings_model->get_teams_user();
 $accessToken = $user_data[0]['access_token'];
 
-/* if (!$this->checkAccesToken($accessToken)) {
-    if (!$this->checkRefrshToken($accessToken)) {
-        $this->signin();
-    }
-} */
+if (!$this->TeamsMeetings_model->checkAccesToken($accessToken)) {
+    redirect(admin_url('teams_meeting_manager/meetings/index'));
+}
 
 $curl = curl_init();
 
@@ -40,18 +38,12 @@ curl_close($curl);
 $arr = json_decode($response, true);
 $meetings_array = [];
 
-/* foreach ($arr["value"] as $meeting) {
-    if ($meeting["isOnlineMeeting"] && $meeting["onlineMeetingProvider"] == "teamsForBusiness") {
-        $met = $this->TeamsMeetings_model->get_meeting_related($meeting["id"]);
-        if ($met["rel_type"] == "project" && $met["rel_type"] == $project->id) {
-            $meetings_array[] = $meeting;
-        }
-    }
-} */
-
 foreach ($arr["value"] as $meeting) {
     if ($meeting["isOnlineMeeting"] && $meeting["onlineMeetingProvider"] == "teamsForBusiness") {
-        $meetings_array[] = $meeting;
+        $met = $this->TeamsMeetings_model->get_meeting_related($meeting["id"]);
+        if ($met["rel_type"] == "project" && $met["rel_id"] == $project->id) {
+            $meetings_array[] = $meeting;
+        }
     }
 }
 
@@ -59,11 +51,11 @@ $notes_array = [];
 foreach ($meetings_array as $meeting) {
     if ($this->TeamsMeetings_model->check_meeting_exists($meeting['id'])) {
         $this->TeamsMeetings_model->create_meeting_notes($meeting['id']);
-        $this->TeamsMeetings_model->create_meeting_related($meeting['id']);
-        $this->TeamsMeetings_model->create_meeting_event($meeting);
     }
     $notes_array[$meeting["id"]] = $this->TeamsMeetings_model->get_meeting_notes($meeting['id']);
 }
+
+
 
 ?>
 
@@ -165,3 +157,21 @@ foreach ($meetings_array as $meeting) {
 
     }
 </script>
+
+<!-- <script>
+    $(document).ready(function() {
+        $.ajax({
+            url: "<?= admin_url('teams_meeting_manager/Meetings/checkAccesToken') ?>",
+            type: "post", // To protect sensitive data
+            data: {
+                ajax: true,
+                accessToken: <?= $accessToken ?>
+                //and any other variables you want to pass via POST
+            },
+            success: function(response) {
+                // Handle the response object
+                console.log(response);
+            }
+        });
+    })
+</script> -->
