@@ -22,6 +22,9 @@ hooks()->add_action('app_admin_head', 'tmm_head_components');
 hooks()->add_action('app_admin_footer', 'tmm_js_footer_components');
 hooks()->add_action('after_email_templates', 'tmm_add_email_templates');
 
+hooks()->add_filter('tasks_table_columns', 'meetings_bookmarks_add_table_column', 10, 2);
+hooks()->add_filter('tasks_table_row_data', 'meetings_bookmarks_add_table_row', 10, 3);
+
 
 $CI = &get_instance();
 
@@ -42,6 +45,26 @@ function tmm_register_user_permissions()
     ];
 
     register_staff_capabilities('teams_meeting_manager', $capabilities, 'Teams Meeting Manager');
+}
+
+function meetings_bookmarks_add_table_column($table_data)
+{
+    array_push($table_data, 'meetings of your Task');
+    return $table_data;
+}
+
+function meetings_bookmarks_add_table_row($row, $aRow)
+{
+    $CI = &get_instance();
+
+    $icon = '';
+
+    $mHref = admin_url('teams_meeting_manager/meetings/mainTableTasks/?mid=' . $aRow['id']);
+    $icon .= '<a href="' . $mHref . '">meetings</a>';
+
+
+    $row[] = $icon;
+    return $row;
 }
 
 /**

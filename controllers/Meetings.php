@@ -181,6 +181,84 @@ class Meetings extends AdminController
 		$this->load->view('index', $data1);
 	}
 
+
+	/**
+	 * index of meetings
+	 *
+	 * @return View
+	 */
+	public function mainTableTasks()
+	{
+		if (!staff_can('view', 'teams_meeting_manager')) {
+			show_404();
+		}
+
+		if ($this->TeamsMeetings_model->check_user_exists())
+			redirect(admin_url('teams_meeting_manager/meetings/login'));
+
+		$user_data = $this->TeamsMeetings_model->get_teams_user();
+		$accessToken = $user_data[0]['access_token'];
+
+		$taskid = $this->input->get('mid');
+
+		$curl = curl_init();
+
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => 'https://graph.microsoft.com/v1.0/me/events',
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => '',
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => 'GET',
+			CURLOPT_HTTPHEADER => array(
+				'Authorization: Bearer ' . $accessToken
+			),
+		));
+
+		$response = curl_exec($curl);
+
+		curl_close($curl);
+
+		$arr = json_decode($response, true);
+		$meetings_array = [];
+
+		foreach ($arr["value"] as $meeting) {
+			if ($meeting["isOnlineMeeting"] && $meeting["onlineMeetingProvider"] == "teamsForBusiness") {
+				if ($taskid) {
+					$meetings_array[] = $meeting;
+				} else {
+					$meetings_array[] = $meeting;
+				}
+			}
+		}
+
+		$notes_array = [];
+		foreach ($meetings_array as $meeting) {
+			if ($this->TeamsMeetings_model->check_meeting_exists($meeting['id'])) {
+				$this->TeamsMeetings_model->create_meeting_notes($meeting['id']);
+				$this->TeamsMeetings_model->create_meeting_related($meeting['id']);
+				$this->TeamsMeetings_model->create_meeting_event($meeting);
+			}
+			$notes_array[$meeting["id"]] = $this->TeamsMeetings_model->get_meeting_notes($meeting['id']);
+		}
+
+
+		$data2 = [
+			'meetings_array' => $meetings_array,
+			'notes_array' => $notes_array
+		];
+
+		$data1 = [
+			'data2' => $data2
+		];
+
+		$this->load->view('index', $data1);
+	}
+
+
+
 	/**
 	 * View meeting
 	 *

@@ -55,8 +55,6 @@ foreach ($meetings_array as $meeting) {
     $notes_array[$meeting["id"]] = $this->TeamsMeetings_model->get_meeting_notes($meeting['id']);
 }
 
-
-
 ?>
 
 <table class="table dt-table dt-inline scroll-responsive" id="meetings">

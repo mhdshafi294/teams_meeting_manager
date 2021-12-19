@@ -119,9 +119,9 @@ init_head();
                                                                         } ?>>
                                                 <?php echo _l('proposal'); ?>
                                             </option>
-                                            <?php
-                                            hooks()->do_action('task_modal_rel_type_select', ['task' => (isset($task) ? $task : 0), 'rel_type' => $relation['rel_type']]);
-                                            ?>
+                                            <!-- <?php
+                                                    /* hooks()->do_action('task_modal_rel_type_select', ['task' => (isset($task) ? $task : 0), 'rel_type' => $relation['rel_type']]);
+                                                     */ ?> -->
                                         </select>
                                     </div>
                                 </div>
