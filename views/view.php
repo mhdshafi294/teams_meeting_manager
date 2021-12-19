@@ -133,7 +133,6 @@ init_head();
                                         <div id="rel_id_select">
                                             <select name="rel_id" id="rel_id" class="ajax-sesarch" data-width="100%" data-live-search="true" data-none-selected-text="<?php echo _l('dropdown_non_selected_tex'); ?>">
                                                 <?php if ($relation['rel_id'] != '' && $relation['rel_type'] != '') {
-
                                                     if ($relation['rel_type'] == 'tasks' || $relation['rel_type'] == 'task') {
                                                         // Tasks only have relation with custom fields when searching on top
                                                         if ($rel_id != '') {
