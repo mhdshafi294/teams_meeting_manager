@@ -133,7 +133,19 @@ init_head();
                                         <div id="rel_id_select">
                                             <select name="rel_id" id="rel_id" class="ajax-sesarch" data-width="100%" data-live-search="true" data-none-selected-text="<?php echo _l('dropdown_non_selected_tex'); ?>">
                                                 <?php if ($relation['rel_id'] != '' && $relation['rel_type'] != '') {
-                                                    $rel_data = get_relation_data($relation['rel_type'], $relation['rel_id']);
+
+                                                    if ($relation['rel_type'] == 'tasks' || $relation['rel_type'] == 'task') {
+                                                        // Tasks only have relation with custom fields when searching on top
+                                                        if ($rel_id != '') {
+                                                            $data = $CI->tasks_model->get($rel_id);
+                                                        } else {
+                                                            $search = $this->TeamsMeetings_model->search_tasks($q);
+                                                            $rel_data   = $search['result'];
+                                                        }
+                                                    } else {
+                                                        $rel_data = get_relation_data($relation['rel_type'], $relation['rel_id']);
+                                                    }
+
                                                     $rel_val = get_relation_values($rel_data, $relation['rel_type']);
                                                     echo '<option value="' . $rel_val['id'] . '" selected>' . $rel_val['name'] . '</option>';
                                                 } ?>

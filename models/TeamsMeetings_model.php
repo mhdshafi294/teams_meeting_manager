@@ -306,4 +306,49 @@ class TeamsMeetings_model extends App_Model
             return true;
         }
     }
+
+    /**
+     * search tasks
+     *
+     * @return Array
+     */
+    public function search_tasks($q, $limit = 0)
+    {
+
+        // Tasks Search
+        $tasks = has_permission('tasks', '', 'view');
+        // Staff tasks
+        $this->db->select();
+        $this->db->from(db_prefix() . 'tasks');
+        if (!is_admin()) {
+            if (!$tasks) {
+                $where = '(id IN (SELECT taskid FROM ' . db_prefix() . 'task_assigned WHERE staffid = ' . get_staff_user_id() . ') OR id IN (SELECT taskid FROM ' . db_prefix() . 'task_followers WHERE staffid = ' . get_staff_user_id() . ') OR (addedfrom=' . get_staff_user_id() . ' AND is_added_from_contact=0) ';
+                if (get_option('show_all_tasks_for_project_member') == 1) {
+                    $where .= ' OR (rel_type="project" AND rel_id IN (SELECT project_id FROM ' . db_prefix() . 'project_members WHERE staff_id=' . get_staff_user_id() . '))';
+                }
+                $where .= ' OR is_public = 1)';
+                $this->db->where($where);
+            } //!$tasks
+        } //!$is_admin
+        if (!startsWith($q, '#')) {
+            $this->db->where('(name LIKE "%' . $this->db->escape_like_str($q) . '%" ESCAPE \'!\' OR description LIKE "%' . $this->db->escape_like_str($q) . '%" ESCAPE \'!\')');
+        } else {
+            $this->db->where('id IN
+                (SELECT rel_id FROM ' . db_prefix() . 'taggables WHERE tag_id IN
+                (SELECT id FROM ' . db_prefix() . 'tags WHERE name="' . $this->db->escape_str(strafter($q, '#')) . '")
+                AND ' . db_prefix() . 'taggables.rel_type=\'task\' GROUP BY rel_id HAVING COUNT(tag_id) = 1)
+                ');
+        }
+
+        $this->db->limit($limit);
+        $this->db->order_by('name', 'ASC');
+
+        $result[] = [
+            'result'         => $this->db->get()->result_array(),
+            'type'           => 'tasks',
+            'search_heading' => _l('tasks'),
+        ];
+
+        return $result;
+    }
 }
